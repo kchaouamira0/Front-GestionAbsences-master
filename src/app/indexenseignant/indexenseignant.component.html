@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+
+	<meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+	<link rel="stylesheet" type="text/css"
+		href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css">
+	<link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css">
+
+</head>
+
+<body>
+	
+
+	
+  	<button class="button" (click)="logout()">Logout</button>
+	
+		<div class="container">
+			<h1 class="text-center">Welcome to your account Professor : {{currentUser.firstName}}
+				{{currentUser.lastName}} </h1>
+			
+			
+
+			<div class="row">
+				<div class="col-sm-8 offset-sm-2 col-md-6 offset-md-3 col-lg-4 offset-lg-4">
+					<div
+						class="profile-card card rounded-lg shadow p-4 p-xl-5 mb-4 text-center position-relative overflow-hidden">
+						<div class="banner"></div>
+						<img src={{currentUser.imageUrl}} alt="" class="img-circle mx-auto mb-3">
+						<h3 class="mb-4"> {{currentUser.firstName}} {{currentUser.lastName}}</h3>
+						<div class="text-left mb-4">
+							<p class="mb-2"><i class="fa fa-envelope mr-2"></i> {{currentUser.email}}</p>
+							<p class="mb-2"> <i class="fa fa-book"></i> {{currentUser.matiere.libelle}}</p>
+
+						</div>
+
+					</div>
+				</div>
+			</div>
+
+		</div>
+	
+
+	<section id="body">
+
+		<h2>Students List for Mr {{currentUser.firstName}} {{currentUser.lastName}}</h2>
+		<hr>
+		<select id="selectgroup" class="form-select form-select-md mb-3 form-control form-select-student"
+			aria-label=".form-select-sm example" [(ngModel)]="selectedgroupe" name="selectedgrp"
+			(ngModelChange)="onFilterStudents(selectedgroupe)" required>
+
+			<option *ngFor="let  name of listgroupes" [value]="name.nom_grp">{{name.nom_grp}}</option>
+
+		</select>
+
+		<hr>
+		
+		<table class="table table-striped">
+			<thead class="thead-dark">
+				<tr>
+					<th scope="col">id</th>
+					<th scope="col">Nom</th>
+					<th scope="col">Prenom</th>
+					<th scope="col">email</th>
+					<th scope="col">Groupe</th>
+					<th scope="col">Nbr Absences</th>
+					<th scope="col">Absences</th>
+
+				</tr>
+			</thead>
+			<tbody>
+				<tr *ngFor="let etudiant of filtredetudiants; let i = index; ">
+					<th scope="row">{{i+1}}</th>
+					<td>{{etudiant.nom}}</td>
+					<td>{{etudiant.prenom}}</td>
+					<td>{{etudiant.email}}</td>
+					<td>{{etudiant.groupe.nom_grp}}</td>
+					<td>{{etudiant.nbrabs}}</td>
+					
+					
+					<!--<td ><div style="color: red;" *ngIf="nbrAbsences() >=6" > {{nbrAbsences()}} </div>
+						<div  *ngIf="nbrAbsences() <6">{{nbrAbsences()}}</div>
+					</td>-->
+					
+					<td> <button type="button" (click)="onOpenAbsenceModal(etudiant.id,'add')" class="btn btn-info">
+							<i class="fas fa-plus"></i> Ajouter
+						</button></td>
+
+				</tr>
+
+			</tbody>
+		</table>
+
+
+
+
+	</section>
+	<div class="container" id="absence-container">
+		<!--add absence modal-->
+		<div class="modal fade" id="addabsence" tabindex="-1" role="dialog" aria-labelledby="addabsence"
+			aria-hidden="true">
+			<div class="modal-dialog" role="document">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title" id="addsubjecttogroupmodal">Add Absence : </h5>
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+						</button>
+					</div>
+					<div class="modal-body">
+						<form #addAbsenceForm="ngForm" >
+							<div class="form-group">
+								<label for="Date">Date :</label>
+								<input type="date" [(ngModel)]="date_abs" name="date_abs"  class="form-control" id="date_abs"
+									placeholder="date_abs" required>
+							</div>
+							<div class="modal-footer">
+								<button type="button" id="add-employee-form" class="btn btn-secondary"
+									data-dismiss="modal">Close</button>
+								<button [disabled]="addAbsenceForm.invalid" type="submit" (click)="onAddAbsence()" class="btn btn-primary">Save
+									changes</button>
+							</div>
+						</form>
+					</div>
+
+
+
+				</div>
+			</div>
+		</div>
+	</div>
+
+
+
+
+
+
+
+
+	<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+
+</html>

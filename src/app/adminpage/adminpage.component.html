@@ -1,0 +1,630 @@
+<nav class="navbar navbar-expand-lg navbar-dark">
+    <a class="navbar-brand" style="color:white;">University Admin</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor02"
+        aria-controls="navbarColor02" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse">
+        <ul class="navbar-nav mr-2">
+            <li class="nav-item active">
+                <a class="nav-link " (click)="onOpenStudentModal(editEtudiant,'add')">Add Student </a>
+            </li>
+        </ul>
+        <ul class="navbar-nav mr-2">
+            <li class="nav-item active">
+                <a class="nav-link" (click)="onOpenProfModal(editEnseignant,'add')">Add Teacher</a>
+            </li>
+        </ul>
+
+        <div class="collapse navbar-collapse">
+            <ul class="navbar-nav mr-2">
+                
+                <li class="nav-item active">
+                    <a class="nav-link " (click)="onOpenSubjectModal(editMatiere,'add')" >Add Subject </a>
+                </li>
+
+                <li class="nav-item active">
+                    <a class="nav-link " (click)="onOpenGroupGrpModal(editGroupe,'add')" >Add Group </a>
+                </li>
+                  
+                <li class="nav-item active">
+                    <a class="nav-link " (click)="logout()" >Logout </a>
+                </li>
+            </ul>
+        </div>
+       
+
+    </div>
+</nav>
+<hr>
+<hr>
+
+<h2>List of Students</h2>
+<hr>
+<select id="selectgroup" class="form-select form-select-md mb-3 form-control form-select-student"
+    aria-label=".form-select-sm example" [(ngModel)]="selectedgroupe" name="selectedgrp"
+    (ngModelChange)="onFilterStudents(selectedgroupe)" required>
+
+    <option *ngFor="let  name of listGroupe" [value]="name.nom_grp">{{name.nom_grp}}</option>
+
+</select>
+
+<div class="container" id="main-container">
+    <div class="row">
+        <div *ngFor="let etudiant of filtredetudiants" class="col-md-6 col-xl-3">
+
+            <div class="card m-b-30">
+                <div class="card-body row">
+                    <div class="col-6">
+                        <a href=""><img src="{{etudiant.imageUrl}}" alt="" class="img-fluid rounded-circle w-60"></a>
+                    </div>
+                    <div class="col-6 card-title align-self-center mb-0">
+                        <h5>{{etudiant.nom}}</h5>
+                        <p class="m-0">{{etudiant.prenom}}</p>
+                        <p class="m-0"> {{etudiant.groupe.nom_grp}}</p>
+                    </div>
+
+                </div>
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item"><i class="fa fa-envelope float-right"></i>{{etudiant.email}}</li>
+                    <li class="list-group-item"><i class="fa fa-phone float-right"></i>Phone : {{etudiant.phone}}</li>
+                </ul>
+                <div class="card-body">
+                    <div class="float-right btn-group btn-group-sm">
+                        <a (click)="onOpenStudentModal(etudiant, 'edit')" class="btn btn-primary tooltips"
+                            data-placement="top" data-original-title="Edit"><i class="fa fa-pencil"></i> </a>
+                        <a (click)="onOpenStudentModal(etudiant, 'delete')" class="btn btn-secondary tooltips"
+                            data-placement="top" data-original-title="Delete"><i class="fa fa-times"></i></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <hr>
+    <hr>
+
+    <h2>List Of Profs</h2>
+    <hr>
+    <select id="selectgroup" class="form-select form-select-md mb-3 form-control form-select-student"
+        aria-label=".form-select-sm example" [(ngModel)]="selectedmatiere"
+        (ngModelChange)="onFilterProfs(selectedmatiere)" required>
+
+        <option *ngFor="let  matiere of matieres" [value]="matiere.libelle">{{matiere.libelle}}</option>
+
+    </select>
+
+    <!-- Add Student Modal -->
+    <div class="modal fade" id="addStudentModal" tabindex="-1" role="dialog" aria-labelledby="addStudentLabel"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="addStudentModalabel">Add Student</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form #addForm="ngForm" (ngSubmit)="onAddStudent(addForm)">
+                        <div class="form-group">
+                            <label for="name">Nom :</label>
+                            <input type="text" ngModel name="nom" class="form-control" id="nom" placeholder="Name"
+                                required>
+                        </div>
+                        <div class="form-group">
+                            <label for="lastname">Prenom :</label>
+                            <input type="text" ngModel name="prenom" class="form-control" id="prenom"
+                                placeholder="prenom" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="email">Email Address:</label>
+                            <input type="email" ngModel name="email" class="form-control" id="email"
+                                pattern=".+@enicar.student.com" placeholder="Email" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="adresse">Adresse :</label>
+                            <input type="text" ngModel name="adresse" class="form-control" id="adresse"
+                                placeholder="adresse" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="phone">Phone:</label>
+                            <input type="text" ngModel name="phone" class="form-control" id="phone" placeholder="Phone"
+                                required>
+                        </div>
+                        <div class="form-group">
+                            <label for="date_naiss">Date_naissance : </label>
+                            <input type="date" ngModel name="date_naiss" class="form-control" id="date_naiss"
+                                placeholder="date_naiss" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="password">Password : </label>
+                            <input type="password" ngModel name="password" class="form-control" id="password"
+                                placeholder="password" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="Groupe">Group Name : </label>
+                            <select id="groupName" class="form-select form-select-sm mb-3"
+                                aria-label=".form-select-sm example" ngModel name="groupe" required>
+
+                                <option *ngFor="let  groupe of listGroupe" [ngValue]="groupe">{{groupe.nom_grp}}
+                                </option>
+
+                            </select>
+                            <div class="form-group">
+                                <label for="imageUrl">Image URL</label>
+                                <input type="text" ngModel name="imageUrl" class="form-control" id="imageUrl"
+                                    placeholder="Image URL" required>
+                            </div>
+
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" id="add-employee-form" class="btn btn-secondary"
+                                data-dismiss="modal">Close</button>
+                            <button [disabled]="addForm.invalid" type="submit" class="btn btn-primary">Save
+                                changes</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+
+
+    <!-- Delete Student Modal -->
+    <div class="modal fade" id="deleteStudentModal" tabindex="-1" role="dialog" aria-labelledby="deleteModelLabel"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="deleteModelLabel">Delete Student</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p>Are you sure you want to delete Student {{deleteEtudiant.nom}}?</p>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">No</button>
+                        <button (click)="onDeleteStudent(deleteEtudiant.id)" class="btn btn-danger"
+                            data-dismiss="modal">Yes</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Edit Student Modal -->
+    <div class="modal fade" id="updateEtudiantModal" tabindex="-1" role="dialog"
+        aria-labelledby="etudiantEditModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="updateStudentModalLabel">Edit Student {{editEtudiant.nom}}</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form #editForm="ngForm">
+                        <div class="form-group">
+                            <label for="name">Nom</label>
+                            <input type="text" [(ngModel)]="editEtudiant.nom" name="name" class="form-control" id="Name"
+                                placeholder="Name">
+                        </div>
+                        <div class="form-group">
+                            <label for="prenom">Prenom</label>
+                            <input type="text" [(ngModel)]="editEtudiant.prenom" name="Prenom" class="form-control"
+                                id="Prenom" placeholder="Prenom">
+                        </div>
+                        <input type="hidden" [(ngModel)]="editEtudiant.adresse" name="adresse" class="form-control"
+                            id="Adresse" placeholder="adresse">
+                        <div class="form-group">
+                            <label for="email">Email Address</label>
+                            <input type="email" [(ngModel)]="editEtudiant.email" name="email"
+                                pattern=".+@enicar.student.com" class="form-control" id="Email" placeholder="Email">
+                        </div>
+                        <div class="form-group">
+                            <label for="Groupe">Group Name : </label>
+                            <select id="groupNameMODIF" class="form-select form-select-sm mb-3"
+                                aria-label=".form-select-sm example" [(ngModel)]="editEtudiant.groupe" name="groupe"
+                                required>
+
+                                <option *ngFor="let  groupe of listGroupe" [ngValue]="groupe">{{groupe.nom_grp}}
+                                </option>
+
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="phone">Image URL</label>
+                            <input type="text" [(ngModel)]="editEtudiant.imageUrl" name="imageUrl" class="form-control"
+                                id="imageUrl" placeholder="Image URL">
+                        </div>
+                        <div class="form-group">
+                            <label for="phone">Phone</label>
+                            <input type="text" [(ngModel)]="editEtudiant.phone" name="phone" class="form-control"
+                                id="Phonenumber" name="phone" placeholder="Phone">
+                        </div>
+
+
+                        <div class="modal-footer">
+                            <button type="button" id="" data-dismiss="modal" class="btn btn-secondary">Close</button>
+                            <button (click)="onUpdateStudent(editForm.value,editEtudiant.id)"
+                                class="btn btn-primary">Save changes</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<div class="container" id="prof-container">
+    <div class="row">
+        <div *ngFor="let enseignant of filtredProfs" class="col-md-6 col-xl-3">
+
+            <div class="card m-b-30">
+                <div class="card-body row">
+                    <div class="col-6">
+                        <a href=""><img src="{{enseignant.imageUrl}}" alt="" class="img-fluid rounded-circle w-60"></a>
+                    </div>
+                    <div class="col-6 card-title align-self-center mb-0">
+                        <h5>{{enseignant.firstName}}</h5>
+                        <p class="m-0">{{enseignant.lastName}}</p>
+                        <p class="m-0">{{enseignant.matiere.libelle}}</p>
+
+                    </div>
+
+                </div>
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item"><i class="fa fa-envelope float-right"></i>{{enseignant.email}}</li>
+
+                </ul>
+                <div class="card-body">
+                    <div class="float-right btn-group btn-group-sm">
+                        <a (click)="onOpenProfModal(enseignant, 'edit')" class="btn btn-primary tooltips"
+                            data-placement="top" data-original-title="Edit"><i class="fa fa-pencil"></i> </a>
+                        <a (click)="onOpenProfModal(enseignant, 'delete')" class="btn btn-secondary tooltips"
+                            data-placement="top" data-original-title="addgroup"><i class="fa fa-times"></i></a>
+                        <a (click)="AffectGroupesToEns(enseignant.id)" class="btn btn-secondary tooltips"
+                            data-placement="top" data-original-title="Delete"><i class="fa fa-plus"></i></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <hr>
+
+    
+    <h2>List Of Subjects</h2>
+
+    <table class="table table-striped">
+        <thead class="thead-blue">
+            <tr>
+                <th scope="col">id</th>
+                <th scope="col">libelle</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let matiere of matieres ; let i =index;">
+                <th scope="row">{{i+1}}</th>
+                <td>{{matiere.libelle}}</td>
+            </tr>
+        </tbody>
+    </table>
+     
+    <hr>
+    <hr>
+    
+    <h2>List Of Groups</h2>
+    <table class="table table-striped">
+        <thead class="thead-blue">
+            <tr>
+                <th scope="col">id</th>
+                <th scope="col">Group name</th>
+                <th scope="col">Add Subject</th>
+                
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let groupe of listGroupe ; let i =index;">
+                <th scope="row">{{i+1}}</th>
+                <td>{{groupe.nom_grp}}</td>
+                <td> <button type="button" (click)="onOpenSubjectGrpModal(groupe,'add')" class="btn btn-info">
+					<i class="fa fa-plus"></i> Ajouter
+				  </button></td>
+            </tr>
+        </tbody>
+    </table>
+
+
+        <!-- Add Prof Modal -->
+        <div class="modal fade" id="addProfModal" tabindex="-1" role="dialog" aria-labelledby="addProfLabel"
+            aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="addProfModalabel">Add Prof</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <form #addprofForm="ngForm" (ngSubmit)="onAddProf(addprofForm)">
+                            <div class="form-group">
+                                <label for="name">Nom :</label>
+                                <input type="text" ngModel name="firstName" class="form-control" id="nomprof"
+                                    placeholder="Name" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="lastname">Prenom :</label>
+                                <input type="text" ngModel name="lastName" class="form-control" id="prenomprof"
+                                    placeholder="prenom" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="email">Email Address:</label>
+                                <input type="email" ngModel name="email" class="form-control" id="emailprof"
+                                    pattern=".+@enicar.prof.com" placeholder="Email" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="password">Password : </label>
+                                <input type="password" ngModel name="password" class="form-control" id="passwordprof"
+                                    placeholder="password" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="imageUrl">Image URL</label>
+                                <input type="text" ngModel name="imageUrl" class="form-control" id="imageUrlprof"
+                                    placeholder="Image URL" required>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="matiere">Matiere : </label>
+                                <select id="matiere" class="form-select form-select-sm mb-3"
+                                    aria-label=".form-select-sm example" ngModel name="matiere" required>
+
+                                    <option *ngFor="let  matiere of matieres" [ngValue]="matiere">{{matiere.libelle}}
+                                    </option>
+
+                                </select>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" id="add-employee-form" class="btn btn-secondary"
+                                    data-dismiss="modal">Close</button>
+                                <button [disabled]="addprofForm.invalid" type="submit" class="btn btn-primary">Save
+                                    changes</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <!-- Edit Prof Modal -->
+        <div class="modal fade" id="updateProfModal" tabindex="-1" role="dialog"
+            aria-labelledby="etudiantEditModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="updateStudentModalLabel">Edit Prof {{editEnseignant.lastName}}</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <form #editForm="ngForm">
+                            <div class="form-group">
+                                <label for="name">Nom</label>
+                                <input type="text" [(ngModel)]="editEnseignant.lastName" name="lastName"
+                                    class="form-control" id="Nameprof" placeholder="Name">
+                            </div>
+                            <div class="form-group">
+                                <label for="prenom">Prenom</label>
+                                <input type="text" [(ngModel)]="editEnseignant.firstName" name="Prenom"
+                                    class="form-control" id="Prenomprof" placeholder="Prenom">
+                            </div>
+                            <div class="form-group">
+                                <label for="email">Email Address</label>
+                                <input type="email" [(ngModel)]="editEnseignant.email" name="email"
+                                    pattern=".+@enicar.prof.com" class="form-control" id="Emailprof"
+                                    placeholder="Email">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="phone">Image URL</label>
+                                <input type="text" [(ngModel)]="editEnseignant.imageUrl" name="imageUrl"
+                                    class="form-control" id="imageUrlprof" placeholder="Image URL">
+                            </div>
+
+
+
+                            <div class="modal-footer">
+                                <button type="button" id="" data-dismiss="modal"
+                                    class="btn btn-secondary">Close</button>
+                                <button (click)="onUpdateProf(editForm.value,editEnseignant.id)"
+                                    class="btn btn-primary">Save changes</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!--delete prof modal-->
+        <div class="modal fade" id="deleteProfModal" tabindex="-1" role="dialog" aria-labelledby="deleteModelLabel"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="deleteModelLabel">Delete Prof</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p>Are you sure you want to delete Prof {{deleteEnseignant.firstName}}?</p>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">No</button>
+                        <button (click)="onDeleteProf(deleteEnseignant.id)" class="btn btn-danger"
+                            data-dismiss="modal">Yes</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+         <!-- add grp to prof modal -->
+
+         <div class="modal fade" id="addgrpProfModal" tabindex="-1" role="dialog"
+         aria-labelledby="etudiantEditModalLabel" aria-hidden="true">
+         <div class="modal-dialog" role="document">
+             <div class="modal-content">
+                 <div class="modal-header">
+                     <h5 class="modal-title" id="updateStudentModalLabel">Edit Prof {{editEnseignant.lastName}}</h5>
+                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                         <span aria-hidden="true">&times;</span>
+                     </button>
+
+                     <div class="modal-body">
+                         <form #addgrpForm="ngForm" (ngSubmit)="onAttribueGrps()">
+                             <div class="form-group">
+                                 <label for="name">Nom Group : </label>
+                                 <label for="listGroupeofEns" class="form-label">Groupes</label>
+                                 <ng-select [(ngModel)]="groupeSelectionnee" name="listGroupeofEns" [multiple]="true"
+                                     [closeOnSelect]="false">
+                                     <ng-option *ngFor="let groupe of listGroupeofEns"
+                                         [value]="groupe">{{groupe.nom_grp}}</ng-option>
+                                 </ng-select>
+                                 <div class="modal-footer">
+                                     <button type="button" id="" data-dismiss="modal"
+                                         class="btn btn-secondary">Close</button>
+                                     <button class="btn btn-primary" type="submit">Save changes</button>
+                                 </div>
+                             </div>
+                         </form>
+                     </div>
+                 </div>
+             </div>
+         </div>
+         </div>
+
+                                
+</div>
+
+
+<div class="container" id="subject-container">
+
+
+
+ <!--add subject modal-->
+
+ <div class="modal fade" id="addSubjectModal" tabindex="-1" role="dialog"
+ aria-labelledby="addSubjectModal" aria-hidden="true">
+ <div class="modal-dialog" role="document">
+     <div class="modal-content">
+         <div class="modal-header">
+             <h5 class="modal-title" id="addSubjectModallabel">Add Subject</h5>
+             <button type="button" class="close" data-dismiss="modal"
+                 aria-label="Close">
+                 <span aria-hidden="true">&times;</span>
+             </button>
+         </div>
+         <div class="modal-body">
+             <form #addsubjectForm="ngForm" (ngSubmit)="onAddSubject(addsubjectForm)">
+                 <div class="form-group">
+                     <label for="name">Libelle :</label>
+                     <input type="text" ngModel name="libelle"
+                         class="form-control" id="nomprof" placeholder="Name"
+                         required>
+                 </div>
+                 <div class="modal-footer">
+                    <button type="button" id="" data-dismiss="modal"
+                        class="btn btn-secondary">Close</button>
+                    <button class="btn btn-primary" type="submit">Save changes</button>
+                </div>
+             </form>
+         </div>
+     </div>
+ </div>
+</div>
+
+</div>
+
+<!--add Subject to group-->
+<div class="container" id="group-container" >
+
+
+    <div class="modal fade" id="addsubjecttogroup" tabindex="-1" role="dialog"
+    aria-labelledby="addsubjecttogroup" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="addsubjecttogroupmodal">Edit Group </h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+
+                <div class="modal-body">
+                    <form [formGroup]="addMatiereForm" (ngSubmit)="onAddMatiere(editGroupe.id)">
+                        <label for="matiere">Subject:</label>
+                        <select id="matiere" formControlName="matiere">
+                          <option *ngFor="let matiere of matieres" [ngValue]="matiere.id">{{ matiere.libelle }}</option>
+                        </select>
+                        <button type="submit">Add Subject</button>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"></button>
+                      </form>
+                      
+                </div>
+            </div>
+        </div>
+    </div>
+    </div>
+
+    <!--add group modal-->
+
+    <div class="modal fade" id="addGroupModal" tabindex="-1" role="dialog"
+ aria-labelledby="addGroupModal" aria-hidden="true">
+ <div class="modal-dialog" role="document">
+     <div class="modal-content">
+         <div class="modal-header">
+             <h5 class="modal-title" id="addGroupModallabel">Add Groupe</h5>
+             <button type="button" class="close" data-dismiss="modal"
+                 aria-label="Close">
+                 <span aria-hidden="true">&times;</span>
+             </button>
+         </div>
+         <div class="modal-body">
+             <form #addgroupForm="ngForm" (ngSubmit)="onAddGroup(addgroupForm)">
+                 <div class="form-group">
+                     <label for="name">Nom du Groupe :</label>
+                     <input type="text" ngModel name="nom_grp"
+                         class="form-control" id="nom_grp" placeholder="Name"
+                         required>
+                     
+                 </div>
+                 <div class="modal-footer">
+                    <button type="button" id="" data-dismiss="modal"
+                        class="btn btn-secondary">Close</button>
+                    <button class="btn btn-primary" type="submit">Save changes</button>
+                </div>
+             </form>
+         </div>
+     </div>
+ </div>
+</div>
+
+
+    
+</div>
+
+
+                         
+        
+
+       

@@ -1,0 +1,62 @@
+h2 {
+    font-size: 50px;
+    color: blue;
+    text-align: center;
+    font-family: 'Times New Roman', Times, serif;
+    font-style: italic;
+}
+
+.navbar-dark{
+    background-color: blueviolet;
+}
+.groupName{
+    font-size: 40px;
+}
+.form-select-student{
+    width: 200px;
+   margin:0 auto;
+   display: block;
+}
+.table {
+    font-size: 14px;
+    padding: 0;
+    border-collapse: collapse;
+	width: 60%;
+	margin: 0 auto;
+	margin-bottom: 40px;
+	
+  }
+  body{
+   
+    background: #f5f5f5;
+}
+.card {
+    border: none;
+    -webkit-box-shadow: 0 1px 2px 0 rgba(0,0,0,.05);
+    box-shadow: 0 1px 2px 0 rgba(0,0,0,.05);
+    margin-bottom: 30px;
+    margin-top: 30px;
+    
+}
+.w-60 {
+    width: 120px;
+}
+h1, h2, h3, h4, h5, h6 {
+    margin: 0 0 10px;
+    font-weight: 600;
+}
+.social-links li a {
+    -webkit-border-radius: 50%;
+    background-color: rgba(89,206,181,.85);
+    border-radius: 50%;
+    color: #fff;
+    display: inline-block;
+    height: 30px;
+    line-height: 30px;
+    text-align: center;
+    width: 30px;
+    font-size: 12px;
+}
+a {
+    color: #707070;
+}
